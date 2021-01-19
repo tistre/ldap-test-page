@@ -33,6 +33,14 @@ $defaults = [
     'option_LDAP_OPT_SIZELIMIT' => 1000
 ];
 
+$configFile = dirname(__DIR__) . '/config.php';
+
+if (file_exists($configFile)) {
+    $config = [];
+    include $configFile;
+    $defaults = array_merge($defaults, $config);
+}
+
 if (!isset($_SESSION['ldapConfig'])) {
     $_SESSION['ldapConfig'] = [];
 }
@@ -56,6 +64,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
     <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>LDAP test page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"/>
 
