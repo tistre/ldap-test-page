@@ -34,9 +34,9 @@ $defaults = [
 ];
 
 $configFile = dirname(__DIR__) . '/config.php';
+$config = [];
 
 if (file_exists($configFile)) {
-    $config = [];
     include $configFile;
     $defaults = array_merge($defaults, $config);
 }
@@ -77,40 +77,52 @@ echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 
     <form method="post" action="">
 
-        <div class="form-group">
-            <label for="host">LDAP server URL:</label>
-            <input name="host" type="text" required="required" class="form-control"
-                   value="<?= htmlspecialchars($_SESSION['ldapConfig']['host']) ?>"/>
-            <small class="form-text text-muted">
-                Example: <em>ldaps://dc1.example.com:3269</em>
-            </small>
-        </div>
-        <div class="form-group">
-            <label for="baseDn">Base DN:</label>
-            <input name="baseDn" type="text" required="required" class="form-control"
-                   value="<?= htmlspecialchars($_SESSION['ldapConfig']['baseDn']) ?>"/>
-            <small class="form-text text-muted">
-                Example: <em>DC=example,DC=com</em>
-            </small>
-        </div>
+        <?php if (empty($config['host'])) { ?>
+            <div class="form-group">
+                <label for="host">LDAP server URL:</label>
+                <input name="host" type="text" required="required" class="form-control"
+                       value="<?= htmlspecialchars($_SESSION['ldapConfig']['host']) ?>"/>
+                <small class="form-text text-muted">
+                    Example: <em>ldaps://dc1.example.com:3269</em>
+                </small>
+            </div>
+        <?php } ?>
+
+        <?php if (empty($config['baseDn'])) { ?>
+            <div class="form-group">
+                <label for="baseDn">Base DN:</label>
+                <input name="baseDn" type="text" required="required" class="form-control"
+                       value="<?= htmlspecialchars($_SESSION['ldapConfig']['baseDn']) ?>"/>
+                <small class="form-text text-muted">
+                    Example: <em>DC=example,DC=com</em>
+                </small>
+            </div>
+        <?php } ?>
+
         <div class="form-row">
-            <div class="form-group col-md-8">
-                <label for="managerDn">Manager DN:</label>
-                <input name="managerDn" type="text" required="required" class="form-control"
-                       value="<?= htmlspecialchars($_SESSION['ldapConfig']['managerDn']) ?>"/>
-                <small class="form-text text-muted">
-                    The user to connect as. Example: <em>CN=admin,DC=example,DC=com</em>
-                </small>
-            </div>
-            <div class="form-group col-md-4">
-                <label for="managerPassword">Manager password:</label>
-                <input name="managerPassword" type="password" required="required" class="form-control"
-                       value="<?= htmlspecialchars($_SESSION['ldapConfig']['managerPassword']) ?>"/>
-                <small class="form-text text-muted">
-                    The password.
-                </small>
-            </div>
+            <?php if (empty($config['managerDn'])) { ?>
+                <div class="form-group col-md-8">
+                    <label for="managerDn">Manager DN:</label>
+                    <input name="managerDn" type="text" required="required" class="form-control"
+                           value="<?= htmlspecialchars($_SESSION['ldapConfig']['managerDn']) ?>"/>
+                    <small class="form-text text-muted">
+                        The user to connect as. Example: <em>CN=admin,DC=example,DC=com</em>
+                    </small>
+                </div>
+            <?php } ?>
+
+            <?php if (empty($config['managerPassword'])) { ?>
+                <div class="form-group col-md-4">
+                    <label for="managerPassword">Manager password:</label>
+                    <input name="managerPassword" type="password" required="required" class="form-control"
+                           value="<?= htmlspecialchars($_SESSION['ldapConfig']['managerPassword']) ?>"/>
+                    <small class="form-text text-muted">
+                        The password.
+                    </small>
+                </div>
+            <?php } ?>
         </div>
+
         <div class="form-row">
             <div class="form-group col-md-4">
                 <label for="option_LDAP_OPT_PROTOCOL_VERSION">Protocol version:</label>
