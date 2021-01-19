@@ -1,2 +1,3 @@
 /.idea
 /app/config.php
+/app/ldap-test.php
